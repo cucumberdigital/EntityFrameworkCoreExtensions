@@ -39,7 +39,7 @@ namespace EntityFrameworkCoreExtensions.Builder
             // MA - Get the untyped builders - these apply to all database contexts.
             var untypedBuilders = _builders.Where(b => !b.IsTyped);
             // MA - Get the typed builders for compatible database contexts.
-            var contextTypedBuilders = _builders.Where(b => b.IsTyped && b.DbContextType != null && b.DbContextType.IsAssignableFrom(dbContextType));
+            var contextTypedBuilders = _builders.Where(b => b.IsTyped && b.DbContextType != null && b.DbContextType.GetTypeInfo().IsAssignableFrom(dbContextType));
 
             // MA - Get the entity types from DbSet<T> properties
             var setTypes = FindSets(dbContextType);
@@ -115,7 +115,7 @@ namespace EntityFrameworkCoreExtensions.Builder
                          && p.DeclaringType != typeof(ExtendedDbContext)
                          && p.PropertyType.GetTypeInfo().IsGenericType
                          && p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>))
-                .Select(p => p.PropertyType.GetGenericArguments()[0])
+                .Select(p => p.PropertyType.GetTypeInfo().GetGenericArguments()[0])
                 .ToArray();
 
         private bool IsStatic(PropertyInfo property)
@@ -133,7 +133,7 @@ namespace EntityFrameworkCoreExtensions.Builder
 
             if (typeInfo.IsGenericType && IsSupportedCollectionType(typeInfo))
             {
-                return propertyType.GetGenericArguments()[0];
+                return propertyType.GetTypeInfo().GetGenericArguments()[0];
             }
             else if (!typeInfo.IsGenericType)
             {

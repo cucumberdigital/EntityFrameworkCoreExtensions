@@ -19,28 +19,23 @@ namespace EntityFrameworkCoreExtensions.Tests.Materialization
         [Fact]
         public void Constructor_ValidatesParameters()
         {
-            // Arrange
-            var memberMapper = new MemberMapper(new FieldMatcher());
-
             // Act
 
             // Assert
-            Assert.Throws<ArgumentNullException>(() => new ExtendedEntityMaterializerSource(null /* memberMapper */, null /* hooks */));
-            Assert.Throws<ArgumentNullException>(() => new ExtendedEntityMaterializerSource(memberMapper, null /* hooks */));
+            Assert.Throws<ArgumentNullException>(() => new ExtendedEntityMaterializerSource(null /* hooks */));
         }
 
         [Fact]
         public void CreateReadValueCallExpression_CallsHook()
         {
             // Arrange
-            var memberMapper = new MemberMapper(new FieldMatcher());
             var testExpression = Expression.Constant(1);
             var hook = new TestEntityMaterializeSourceHook()
             {
                 TestExpression = testExpression
             };
             var hooks = new IEntityMaterializerSourceHook[] { hook };
-            var source = new ExtendedEntityMaterializerSource(memberMapper, hooks);
+            var source = new ExtendedEntityMaterializerSource(hooks);
 
             // Act
             var expression = source.CreateReadValueCallExpression(_readerParameter, 0);
@@ -54,14 +49,13 @@ namespace EntityFrameworkCoreExtensions.Tests.Materialization
         public void CreateReadValueExpression_CallsHook()
         {
             // Arrange
-            var memberMapper = new MemberMapper(new FieldMatcher());
             var testExpression = Expression.Constant(1);
             var hook = new TestEntityMaterializeSourceHook()
             {
                 TestExpression = testExpression
             };
             var hooks = new IEntityMaterializerSourceHook[] { hook };
-            var source = new ExtendedEntityMaterializerSource(memberMapper, hooks);
+            var source = new ExtendedEntityMaterializerSource(hooks);
 
             // Act
             var expression = source.CreateReadValueExpression(_readerParameter, typeof(string), 0);
@@ -75,7 +69,6 @@ namespace EntityFrameworkCoreExtensions.Tests.Materialization
         public void CreateMaterializeExpression_CallsHook()
         {
             // Arrange
-            var memberMapper = new MemberMapper(new FieldMatcher());
             var entityType = new Model().AddEntityType(typeof(Product));
             var testExpression = Expression.Constant(1);
             var hook = new TestEntityMaterializeSourceHook()
@@ -83,7 +76,7 @@ namespace EntityFrameworkCoreExtensions.Tests.Materialization
                 TestExpression = testExpression
             };
             var hooks = new IEntityMaterializerSourceHook[] { hook };
-            var source = new ExtendedEntityMaterializerSource(memberMapper, hooks);
+            var source = new ExtendedEntityMaterializerSource(hooks);
 
             // Act
             var expression = source.CreateMaterializeExpression(entityType, _readerParameter);

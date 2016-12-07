@@ -19,10 +19,9 @@ namespace EntityFrameworkCoreExtensions.Materialization
         /// <summary>
         /// Initialises a new instance of <see cref="ExtendedEntityMaterializerSource"/>.
         /// </summary>
-        /// <param name="memberMapper">The member mapper.</param>
         /// <param name="hooks">The set of entity materializer source hooks.</param>
-        public ExtendedEntityMaterializerSource(IMemberMapper memberMapper, IEnumerable<IEntityMaterializerSourceHook> hooks)
-            : base(memberMapper)
+        public ExtendedEntityMaterializerSource(IEnumerable<IEntityMaterializerSourceHook> hooks)
+            : base()
         {
             _executor = new FirstResultFuncExecutor<IEntityMaterializerSourceHook>(Ensure.NotNull(hooks, nameof(hooks)).ToArray());
         }
@@ -45,7 +44,7 @@ namespace EntityFrameworkCoreExtensions.Materialization
             ?? base.CreateReadValueCallExpression(valueBuffer, index);
 
         /// <inheritdoc />
-        public override Expression CreateReadValueExpression(Expression valueBuffer, Type type, int index)
+        public override Expression CreateReadValueExpression(Expression valueBuffer, Type type, int index, IProperty property = null)
             => _executor.Execute(hook => hook.CreateReadValueExpression(
                 valueBuffer,
                 type,
@@ -54,3 +53,4 @@ namespace EntityFrameworkCoreExtensions.Materialization
             ?? base.CreateReadValueExpression(valueBuffer, type, index);
     }
 }
+

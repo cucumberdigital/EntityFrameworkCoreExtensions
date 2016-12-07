@@ -23,10 +23,10 @@
   },
   "dependencies": {
     "EntityFrameworkCoreExtensions": { "target": "project" },
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1"
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0"
   },
   "frameworks": {
     "net451": {},
-    "netstandard1.3": {}
+    "netstandard1.6": {}
   }
 }

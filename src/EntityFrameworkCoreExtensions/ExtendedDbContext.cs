@@ -128,7 +128,7 @@ namespace EntityFrameworkCoreExtensions
             var untyped = hooks.Where(h => !h.IsTyped);
 
             // MA - Get the typed hooks.
-            var typed = hooks.Where(h => h.IsTyped && h.DbContextType != null && h.DbContextType.IsAssignableFrom(_dbContextType));
+            var typed = hooks.Where(h => h.IsTyped && h.DbContextType != null && h.DbContextType.GetTypeInfo().IsAssignableFrom(_dbContextType));
 
             // MA - Create the action executor.
             return new ActionExecutor<IDbContextHook>(untyped.Concat(typed).ToArray());

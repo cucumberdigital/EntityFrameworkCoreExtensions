@@ -6,15 +6,15 @@
     "dotnet-test-xunit": "2.2.0-*",
     "xunit": "2.2.0-*",
     "Moq": "4.6.36-*",
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
     "EntityFrameworkCoreExtensions.SqlServer": { "target": "project" }
   },
   "testRunner": "xunit",
   "frameworks": {
-    "netcoreapp1.1": {
+    "netcoreapp1.0": {
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.1",
+          "version": "1.1.0",
           "type": "platform"
         }
       }
